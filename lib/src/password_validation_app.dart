@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:password_validation/src/pages/validation_page.dart';
+
+import 'pages/validation_page.dart';
 
 class PasswordValidationApp extends StatelessWidget {
   const PasswordValidationApp({super.key});
