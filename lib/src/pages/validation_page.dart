@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../shared/colors_app.dart';
 import '../shared/custom_textfield.dart';
+import '../shared/custom_textfield_pwd.dart';
 
 class ValidationPage extends StatelessWidget {
   const ValidationPage({super.key});
@@ -9,6 +10,7 @@ class ValidationPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final senhaEC = TextEditingController();
+    final confirmarEC = TextEditingController();
     return SafeArea(
       child: Scaffold(
         backgroundColor: lightGray,
@@ -39,16 +41,14 @@ class ValidationPage extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 26),
-                CustomTextfield(
+                CustomTextfieldPwd(
                   controller: senhaEC,
-                  obscureText: false,
                   label: 'Senha',
                   backgroundColor: Colors.white,
                 ),
                 const SizedBox(height: 22),
-                CustomTextfield(
-                  controller: senhaEC,
-                  obscureText: false,
+                CustomTextfieldPwd(
+                  controller: confirmarEC,
                   label: 'Confirmar Senha',
                   backgroundColor: Colors.white,
                 ),

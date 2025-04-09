@@ -55,7 +55,7 @@ class _CustomTextfieldState extends State<CustomTextfield> {
             filled: true,
             fillColor: widget.backgroundColor,
             hintText: widget.hintText,
-            suffix: widget.suffix,
+            suffixIcon: widget.suffix,
             isDense: true,
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
