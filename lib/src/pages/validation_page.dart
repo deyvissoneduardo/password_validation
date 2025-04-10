@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../shared/colors_app.dart';
-import '../shared/custom_textfield.dart';
 import '../shared/custom_textfield_pwd.dart';
 
 class ValidationPage extends StatelessWidget {
