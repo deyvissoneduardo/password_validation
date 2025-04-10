@@ -84,5 +84,25 @@ void main() {
       expect(getTextField().obscureText, isTrue);
       expect(find.byIcon(Icons.visibility), findsOneWidget);
     });
+
+    testWidgets('Render controller', (WidgetTester tester) async {
+      final controller = TextEditingController();
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: CustomTextfieldPwd(
+              label: 'Label Teste',
+              backgroundColor: Colors.white,
+              controller: controller,
+            ),
+          ),
+        ),
+      );
+
+      await tester.enterText(find.byType(TextField), 'senha');
+      await tester.pump();
+      expect(controller.text, 'senha');
+      expect(controller.text, isNotEmpty);
+    });
   });
 }
