@@ -4,13 +4,26 @@ import '../shared/colors_app.dart';
 import '../shared/custom_textfield_pwd.dart';
 import 'widgets/password_validation_panel_widget.dart';
 
-class ValidationPage extends StatelessWidget {
+class ValidationPage extends StatefulWidget {
   const ValidationPage({super.key});
 
   @override
+  State<ValidationPage> createState() => _ValidationPageState();
+}
+
+class _ValidationPageState extends State<ValidationPage> {
+  final senhaEC = TextEditingController();
+  final confirmarEC = TextEditingController();
+
+  @override
+  void dispose() {
+    senhaEC.dispose();
+    confirmarEC.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final senhaEC = TextEditingController();
-    final confirmarEC = TextEditingController();
     return SafeArea(
       child: Scaffold(
         backgroundColor: lightGray,
@@ -53,7 +66,11 @@ class ValidationPage extends StatelessWidget {
                   backgroundColor: Colors.white,
                 ),
                 const SizedBox(height: 37),
-                PasswordValidationPanelWidget(),
+                PasswordValidationPanelWidget(
+                  passwordController: senhaEC,
+                  confirmPasswordController: confirmarEC,
+                  passwordValid: (bool value) {},
+                ),
                 const SizedBox(height: 40),
                 ElevatedButton(onPressed: () {}, child: Text('Salvar')),
               ],

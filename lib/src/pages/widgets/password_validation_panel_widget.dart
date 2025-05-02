@@ -1,10 +1,21 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 
 import '../../shared/colors_app.dart';
 import 'password_dot_validation_widget.dart';
 
 class PasswordValidationPanelWidget extends StatefulWidget {
-  const PasswordValidationPanelWidget({super.key});
+  final TextEditingController passwordController;
+  final TextEditingController confirmPasswordController;
+  final ValueChanged<bool> passwordValid;
+
+  const PasswordValidationPanelWidget({
+    super.key,
+    required this.passwordController,
+    required this.confirmPasswordController,
+    required this.passwordValid,
+  });
 
   @override
   State<PasswordValidationPanelWidget> createState() =>
@@ -13,6 +24,23 @@ class PasswordValidationPanelWidget extends StatefulWidget {
 
 class _PasswordValidationPanelWidgetState
     extends State<PasswordValidationPanelWidget> {
+  final validationRulesPasswordText = ValueNotifier('');
+  final approvedRules = List.generate(5, (index) => false);
+  var passwordValid = false;
+
+  void updateValidRule(ValueKey<int> key, bool valid) {
+    approvedRules[key.value] = !valid;
+    checkRules();
+  }
+
+  void checkRules() {
+    final valid = approvedRules.every((rule) => rule);
+    if (valid != passwordValid) {
+      passwordValid = valid;
+      widget.passwordValid(valid);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -32,38 +60,44 @@ class _PasswordValidationPanelWidgetState
         ),
         PasswordDotValidationWidget(
           label: 'Minino de 8 caracters',
-          key: ValueKey(1),
-          passwordValue: ValueNotifier(''),
-          patternValidation: '',
-          updateMatch: (key, match) {},
+          key: ValueKey(0),
+          passwordValue: validationRulesPasswordText,
+          patternValidation: r'^.{8,}$',
+          updateMatch: updateValidRule,
         ),
         PasswordDotValidationWidget(
           label: 'Uma letra maiuscula',
-          key: ValueKey(2),
-          passwordValue: ValueNotifier(''),
-          patternValidation: '',
-          updateMatch: (key, match) {},
+          key: ValueKey(1),
+          passwordValue: validationRulesPasswordText,
+          patternValidation: r'[A-Z]',
+          updateMatch: updateValidRule,
         ),
         PasswordDotValidationWidget(
           label: 'um ou mais numero',
-          key: ValueKey(4),
-          passwordValue: ValueNotifier(''),
-          patternValidation: '',
-          updateMatch: (key, match) {},
+          key: ValueKey(2),
+          passwordValue: validationRulesPasswordText,
+          patternValidation: r'[0-9]',
+          updateMatch: updateValidRule,
         ),
         PasswordDotValidationWidget(
-          label: 'uma ou mais letras',
-          key: ValueKey(5),
-          passwordValue: ValueNotifier(''),
-          patternValidation: '',
-          updateMatch: (key, match) {},
+          label: 'um ou mais caracteres especiais',
+          key: ValueKey(3),
+          passwordValue: validationRulesPasswordText,
+          patternValidation: r'[!@#\$%^&*(),.?":{}|<>_\-=+\[\]\\/~`´;]',
+          updateMatch: updateValidRule,
         ),
-        PasswordDotValidationWidget(
-          label: 'Senha igual ao confirmar senha',
-          key: ValueKey(6),
-          passwordValue: ValueNotifier(''),
-          patternValidation: '',
-          updateMatch: (key, match) {},
+        ValueListenableBuilder(
+          valueListenable: widget.confirmPasswordController,
+          builder: (context, confirmPassowordText, child) {
+            return PasswordDotValidationWidget(
+              label: 'Senha igual ao confirmar senha',
+              key: ValueKey(4),
+              passwordValue: validationRulesPasswordText,
+              patternValidation:
+                  '^${RegExp.escape(confirmPassowordText.text)}\$',
+              updateMatch: updateValidRule,
+            );
+          },
         ),
       ],
     );
